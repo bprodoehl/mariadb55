@@ -35,7 +35,9 @@ if [ -n ${SEGMENT} ]; then
 fi
 
 if [ ${WAN} -eq 1 ]; then 
-    WSREP_PROVIDER_OPTIONS+="gcache.size = 2G; gcs.fc_limit = 128; evs.send_window = 1024; evs.user_send_window = 512; evs.keepalive_period = PT3S; evs.inactive_check_period = PT10S; evs.suspect_timeout = PT30S; evs.inactive_timeout = PT1M;"
+    WSREP_PROVIDER_OPTIONS+="gcache.size = 2G; gcs.fc_limit = 128; evs.send_window = 1024;
+      evs.user_send_window = 512; evs.keepalive_period = PT3S; evs.inactive_check_period = PT10S;
+      evs.suspect_timeout = PT30S; evs.inactive_timeout = PT1M;"
 fi
 
 # create link for less flexible scripts
@@ -67,7 +69,7 @@ elif [ ${CLUSTER} = "INIT" ]; then
     exec /usr/bin/mysqld_safe --wsrep_node_address="${NODE_ADDR}" \
         --wsrep_node_incoming_address="${NODE_ADDR}" \
         --wsrep_new_cluster --wsrep_cluster_address="gcomm://" \
-        $WSREP_PROVIDER_OPTIONS
+        $WSREP_PROVIDER_OPTIONS \
         --log-error=/var/lib/mysql/mysql-$NODE.error.log
 else
     if [ -z ${NODE+x} ]; then
@@ -78,7 +80,7 @@ else
     CLUSTER="gcomm://$CLUSTER"
     exec /usr/bin/mysqld_safe --wsrep_node_address="${NODE_ADDR}" \
         --wsrep_node_incoming_address="${NODE_ADDR}" \
-        $WSREP_PROVIDER_OPTIONS
+        $WSREP_PROVIDER_OPTIONS \ 
         --wsrep_cluster_address=$CLUSTER --log-error=/var/lib/mysql/mysql-$NODE.error.log
 fi
 
