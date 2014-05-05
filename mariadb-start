@@ -69,7 +69,7 @@ elif [ ${CLUSTER} = "INIT" ]; then
     exec /usr/bin/mysqld_safe --wsrep_node_address="${NODE_ADDR}" \
         --wsrep_node_incoming_address="${NODE_ADDR}" \
         --wsrep_new_cluster --wsrep_cluster_address="gcomm://" \
-        $WSREP_PROVIDER_OPTIONS \
+        --wsrep_provider_options="$WSREP_PROVIDER_OPTIONS" \
         --log-error=/var/lib/mysql/mysql-$NODE.error.log
 else
     if [ -z ${NODE+x} ]; then
@@ -80,7 +80,7 @@ else
     CLUSTER="gcomm://$CLUSTER"
     exec /usr/bin/mysqld_safe --wsrep_node_address="${NODE_ADDR}" \
         --wsrep_node_incoming_address="${NODE_ADDR}" \
-        $WSREP_PROVIDER_OPTIONS \ 
+        --wsrep_provider_options="$WSREP_PROVIDER_OPTIONS" \ 
         --wsrep_cluster_address=$CLUSTER --log-error=/var/lib/mysql/mysql-$NODE.error.log
 fi
 
