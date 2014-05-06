@@ -4,7 +4,7 @@ set -eu
 
 DIR=`pwd`/openssl
 PRIV=$DIR/private
-PASSPHRASE=passphrase
+PASSPHRASE=`openssl rand -base64 32`
 
 DESTDIR=/data/mysql-ssl
 
