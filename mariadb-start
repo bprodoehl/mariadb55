@@ -6,6 +6,28 @@ status () {
   echo "---> ${@}" >&2
 }
 
+# set WAN performance optimizations and segment support
+WSREP_PROVIDER_OPTIONS=""
+
+set +u
+
+if [ ! -z ${SEGMENT} ]; then
+    if [ "$SEGMENT" -eq "$SEGMENT" > /dev/null 2>&1 ]; then
+        WSREP_PROVIDER_OPTIONS="gmcast.segment = $SEGMENT; "
+    else 
+            echo "SEGMENT must be an integer"
+            exit 1
+    fi
+fi
+
+if [ ! -z ${WAN} ]; then
+    WSREP_PROVIDER_OPTIONS=$WSREP_PROVIDER_OPTIONS"gcache.size = 2G; gcs.fc_limit = 128; evs.send_window = 1024; \
+      evs.user_send_window = 512; evs.keepalive_period = PT3S; evs.inactive_check_period = PT10S; \
+      evs.suspect_timeout = PT30S; evs.inactive_timeout = PT1M;"
+fi
+
+set -u
+
 if [ -z ${CLUSTER+x} ]; then
     echo "CLUSTER variable must be BOOT, INIT or cluster node list"
     exit 1
@@ -28,28 +50,6 @@ fi
 if [ -d /etc/ssl/mysql ]; then
    chown mysql:mysql /etc/ssl/mysql/*.pem
 fi
-
-# set WAN performance optimizations and segment support
-WSREP_PROVIDER_OPTIONS=""
-
-set +u
-
-if [ -n ${SEGMENT} ]; then
-    if [ "${SEGMENT}" -eq "${SEGMENT}" 2>/dev/null]; then
-        WSREP_PROVIDER_OPTIONS+="gmcast.segment = ${SEGMENT};"
-    else 
-            echo "SEGMENT must be an integer"
-            exit 1
-    fi
-fi
-
-if [ ${WAN} -eq 1 ]; then 
-    WSREP_PROVIDER_OPTIONS+="gcache.size = 2G; gcs.fc_limit = 128; evs.send_window = 1024;
-      evs.user_send_window = 512; evs.keepalive_period = PT3S; evs.inactive_check_period = PT10S;
-      evs.suspect_timeout = PT30S; evs.inactive_timeout = PT1M;"
-fi
-
-set -u
 
 # create link for less flexible scripts
 
@@ -91,6 +91,7 @@ else
     CLUSTER="gcomm://$CLUSTER"
     exec /usr/bin/mysqld_safe --wsrep_node_address="${NODE_ADDR}" \
         --wsrep_node_incoming_address="${NODE_ADDR}" \
-        --wsrep_provider_options="$WSREP_PROVIDER_OPTIONS" \ 
+        --wsrep_provider_options="$WSREP_PROVIDER_OPTIONS" \
         --wsrep_cluster_address=$CLUSTER --log-error=/var/lib/mysql/mysql-$NODE.error.log
 fi
+
