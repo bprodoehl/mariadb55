@@ -25,14 +25,15 @@ fi
 # set WAN performance optimizations and segment support
 WSREP_PROVIDER_OPTIONS=""
 
+set +u
+
 if [ -n ${SEGMENT} ]; then
-    echo "SEGMENT is set!"
-#    if [ "${SEGMENT}" -eq "${SEGMENT}" 2>/dev/null]; then
-#        WSREP_PROVIDER_OPTIONS+="gmcast.segment = ${SEGMENT};"
-#    else 
-#            echo "SEGMENT must be an integer"
-#            exit 1
-#    fi
+    if [ "${SEGMENT}" -eq "${SEGMENT}" 2>/dev/null]; then
+        WSREP_PROVIDER_OPTIONS+="gmcast.segment = ${SEGMENT};"
+    else 
+            echo "SEGMENT must be an integer"
+            exit 1
+    fi
 fi
 
 if [ ${WAN} -eq 1 ]; then 
@@ -40,6 +41,8 @@ if [ ${WAN} -eq 1 ]; then
       evs.user_send_window = 512; evs.keepalive_period = PT3S; evs.inactive_check_period = PT10S;
       evs.suspect_timeout = PT30S; evs.inactive_timeout = PT1M;"
 fi
+
+set -u
 
 # create link for less flexible scripts
 
