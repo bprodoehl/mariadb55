@@ -21,8 +21,8 @@ if [ ! -z ${SEGMENT} ]; then
 fi
 
 if [ ! -z ${WAN} ]; then
-    WSREP_PROVIDER_OPTIONS=$WSREP_PROVIDER_OPTIONS"gcache.size = 2G; gcs.fc_limit = 128; evs.send_window = 1024;
-      evs.user_send_window = 512; evs.keepalive_period = PT3S; evs.inactive_check_period = PT10S;
+    WSREP_PROVIDER_OPTIONS=$WSREP_PROVIDER_OPTIONS"gcache.size = 2G; gcs.fc_limit = 128; evs.send_window = 1024; \
+      evs.user_send_window = 512; evs.keepalive_period = PT3S; evs.inactive_check_period = PT10S; \
       evs.suspect_timeout = PT30S; evs.inactive_timeout = PT1M;"
 fi
 
