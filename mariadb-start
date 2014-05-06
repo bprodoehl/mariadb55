@@ -22,6 +22,25 @@ if [ -d /etc/ssl/mysql ]; then
    chown mysql:mysql /etc/ssl/mysql/*.pem
 fi
 
+# set WAN performance optimizations and segment support
+WSREP_PROVIDER_OPTIONS=""
+
+if [ -n ${SEGMENT} ]; then
+    echo "SEGMENT is set!"
+#    if [ "${SEGMENT}" -eq "${SEGMENT}" 2>/dev/null]; then
+#        WSREP_PROVIDER_OPTIONS+="gmcast.segment = ${SEGMENT};"
+#    else 
+#            echo "SEGMENT must be an integer"
+#            exit 1
+#    fi
+fi
+
+if [ ${WAN} -eq 1 ]; then 
+    WSREP_PROVIDER_OPTIONS+="gcache.size = 2G; gcs.fc_limit = 128; evs.send_window = 1024;
+      evs.user_send_window = 512; evs.keepalive_period = PT3S; evs.inactive_check_period = PT10S;
+      evs.suspect_timeout = PT30S; evs.inactive_timeout = PT1M;"
+fi
+
 # create link for less flexible scripts
 
 ln -sf /var/lib/mysql/mysql.sock /var/run/mysqld/mysqld.sock
@@ -51,6 +70,7 @@ elif [ ${CLUSTER} = "INIT" ]; then
     exec /usr/bin/mysqld_safe --wsrep_node_address="${NODE_ADDR}" \
         --wsrep_node_incoming_address="${NODE_ADDR}" \
         --wsrep_new_cluster --wsrep_cluster_address="gcomm://" \
+        --wsrep_provider_options="$WSREP_PROVIDER_OPTIONS" \
         --log-error=/var/lib/mysql/mysql-$NODE.error.log
 else
     if [ -z ${NODE+x} ]; then
@@ -61,6 +81,6 @@ else
     CLUSTER="gcomm://$CLUSTER"
     exec /usr/bin/mysqld_safe --wsrep_node_address="${NODE_ADDR}" \
         --wsrep_node_incoming_address="${NODE_ADDR}" \
+        --wsrep_provider_options="$WSREP_PROVIDER_OPTIONS" \ 
         --wsrep_cluster_address=$CLUSTER --log-error=/var/lib/mysql/mysql-$NODE.error.log
 fi
-

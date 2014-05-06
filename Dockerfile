@@ -43,6 +43,7 @@ expose    3306 4567 4444
 
 add    ./mariadb-setrootpassword /usr/bin/mariadb-setrootpassword
 add    ./mariadb-start /usr/bin/mariadb-start
+add    ./generate-keys.sh /usr/bin/generate-keys.sh
 cmd    ["/usr/bin/mariadb-start"]
 
 # vim:ts=8:noet:
