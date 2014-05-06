@@ -28,8 +28,6 @@ fi
 
 set -u
 
-echo $WSREP_PROVIDER_OPTIONS
-exit 0
 if [ -z ${CLUSTER+x} ]; then
     echo "CLUSTER variable must be BOOT, INIT or cluster node list"
     exit 1
