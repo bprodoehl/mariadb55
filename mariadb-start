@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -eu
 
@@ -17,6 +17,13 @@ fi
 
 mv /usr/bin/xtrabackup /usr/bin/xtrabackup_51
 ln -sf /usr/bin/xtrabackup_55 /usr/bin/xtrabackup
+
+if [[ ! -d /etc/ssl/mysql ||
+      ! -e /etc/ssl/mysql/ca.pem ||
+      ! -e /etc/ssl/mysql/server-key.pem ||
+      ! -e /etc/ssl/mysql/server-cert.pem ]]; then
+   generate-keys.sh /etc/ssl/mysql
+fi
 
 if [ -d /etc/ssl/mysql ]; then
    chown mysql:mysql /etc/ssl/mysql/*.pem

@@ -37,13 +37,16 @@ run    rm -r /var/lib/mysql
 
 # Add config(s) - standalong and cluster mode
 add    ./my-cluster.cnf /etc/mysql/my-cluster.cnf
-add     ./my-init.cnf /etc/mysql/my-init.cnf
-
-expose    3306 4567 4444
+add    ./my-init.cnf /etc/mysql/my-init.cnf
 
 add    ./mariadb-setrootpassword /usr/bin/mariadb-setrootpassword
 add    ./mariadb-start /usr/bin/mariadb-start
+
 add    ./generate-keys.sh /usr/bin/generate-keys.sh
+add    ./openssl.cnf /etc/mysql/openssl.cnf
+
+expose    3306 4567 4444
+
 cmd    ["/usr/bin/mariadb-start"]
 
 # vim:ts=8:noet:
