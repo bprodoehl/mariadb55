@@ -49,6 +49,7 @@ add    ./generate-keys.sh /usr/bin/generate-keys.sh
 add    ./openssl.cnf /etc/mysql/openssl.cnf
 
 add    ./monit /usr/share/monit-mysql
+add    ./monit-mysql.conf /etc/monit/conf.d/monit-mysql.conf
 
 expose    3306 4567 4444
 
