@@ -48,6 +48,8 @@ add    ./mariadb-start /usr/bin/mariadb-start
 add    ./generate-keys.sh /usr/bin/generate-keys.sh
 add    ./openssl.cnf /etc/mysql/openssl.cnf
 
+add    ./monit /usr/share/monit-mysql
+
 expose    3306 4567 4444
 
 cmd    ["/usr/bin/mariadb-start"]

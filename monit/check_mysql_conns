@@ -10,7 +10,7 @@ require("plugin")
 
 -- do check
 function check(opts) 
-  require "luasql.mysql"
+  luasql = require "luasql.mysql"
   env = assert (luasql.mysql())
   conn = assert (env:connect("mysql", opts["username"], opts["password"], opts["host"], tonumber(opts["port"])))
   -- retrieve status
