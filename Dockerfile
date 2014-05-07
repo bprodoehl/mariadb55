@@ -27,6 +27,9 @@ run    add-apt-repository 'deb http://repo.percona.com/apt trusty main'
 run    apt-get -y update
 run    LC_ALL=C DEBIAN_FRONTEND=noninteractive apt-get install -y percona-xtrabackup
 
+# Install Monit and Lua (for monit plugins)
+run    LC_ALL=C DEBIAN_FRONTEND=noninteractive apt-get install -y monit lua5.2 lua-sql-mysql lua-socket
+
 # add in extra wsrep scripts
 add     wsrep_sst_common /usr/bin/wsrep_sst_common
 add     wsrep_sst_xtrabackup-v2 /usr/bin/wsrep_sst_xtrabackup-v2
