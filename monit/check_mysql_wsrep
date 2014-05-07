@@ -1,0 +1,11 @@
+#!/bin/bash
+
+. /usr/share/monit-mysql/env.sh
+
+/usr/share/monit-mysql/lua/check_mysql_wsrep \
+    --host=$MONIT_MYSQL_HOST \
+    --port=$MONIT_MYSQL_PORT \
+    --username=$MONIT_MYSQL_USER \
+    --password=$MONIT_MYSQL_PASSWORD
+
+exit $?
