@@ -56,9 +56,9 @@ if [ -d /etc/ssl/mysql ]; then
 fi
 
 ### Set up Monit
-#sed -i.bak 's/{{MONIT_MYSQL_USER/'$MONIT_MYSQL_USER'/g' /usr/share/monit-mysql/env.sh
-#sed -i.bak 's/{{MONIT_MYSQL_PASSWORD/'$MONIT_MYSQL_PASSWORD'/g' /usr/share/monit-mysql/env.sh
-monit
+sed -i.bak 's/{{MONIT_MYSQL_USER}}/'$MONIT_MYSQL_USER'/g' /usr/share/monit-mysql/env.sh
+sed -i.bak 's/{{MONIT_MYSQL_PASSWORD}}/'$MONIT_MYSQL_PASSWORD'/g' /usr/share/monit-mysql/env.sh
+sleep 180 &&  monit &
 
 # create link for less flexible scripts
 
