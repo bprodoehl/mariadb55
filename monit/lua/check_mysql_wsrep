@@ -36,7 +36,7 @@ function check(opts)
   con:close()
   env:close()
 
-  if allValues["cluster_size"] <= "0" or allValues["cluster_status"] ~= "Connected" or allValues["connected"] ~= "ON" or allValues["ready"] ~= "ON" then
+  if allValues["cluster_size"] <= "0" or allValues["cluster_status"] ~= "Primary" or allValues["connected"] ~= "ON" or allValues["ready"] ~= "ON" then
     error("WSREP values do not match.")
     os.exit(1)
   end
