@@ -26,6 +26,10 @@ if [ ! -z ${WAN} ]; then
       evs.suspect_timeout = PT30S; evs.inactive_timeout = PT1M;"
 fi
 
+if [ ! -z ${MMONIT_URL} ] ; then
+    echo "set mmonit "$MMONIT_URL > /etc/monit/conf.d/monit-mmonit.conf
+fi
+
 set -u
 
 if [ -z ${CLUSTER+x} ]; then
