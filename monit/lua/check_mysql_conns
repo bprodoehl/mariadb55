@@ -44,6 +44,14 @@ function check(opts)
   cursor:close()
   conn:close()
   env:close()
+
+  threadPercentage = (metrics["connected"] / variables["max_connections"]) * 100
+  print("Thread percentage: ", threadPercentage) 
+  if threadPercentage > 80 then
+    error("High Usage")
+    os.exit(1)
+  end
+
 end
 
 -- usage
